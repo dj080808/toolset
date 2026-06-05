@@ -57,6 +57,7 @@ h1 { font-size: 26px; margin-bottom: 8px; }
 .roadmap-phases { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 .phase { display: flex; gap: 12px; align-items: flex-start; }
 .phase-num { background: #1a73e8; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; flex-shrink: 0; min-width: 36px; text-align: center; }
+.phase-num-p0 { background: #e37400; }
 .phase-body { font-size: 14px; color: #555; padding-top: 2px; }
 .phase-body strong { color: #333; }
 .roadmap-note { margin-top: 14px; font-size: 13px; color: #888; border-top: 1px solid #eee; padding-top: 12px; }
@@ -65,3 +66,44 @@ h1 { font-size: 26px; margin-bottom: 8px; }
 .stack-card.deprecated { opacity: 0.55; border: 1px dashed #ddd; }
 .stack-card.deprecated:hover { opacity: 0.8; }
 .deprecated-badge { display: inline-block; background: #fce8e6; color: #c5221f; padding: 1px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; vertical-align: middle; margin-left: 6px; }
+
+/* Markdown 渲染内容 */
+.md-body { white-space: normal; }
+.md-body h2 { font-size: 18px; margin: 20px 0 10px; border-bottom: 1px solid #eee; padding-bottom: 6px; }
+.md-body h3 { font-size: 15px; margin: 16px 0 8px; }
+.md-body p { margin: 8px 0; }
+.md-body ul, .md-body ol { padding-left: 20px; margin: 8px 0; }
+.md-body li { margin: 4px 0; }
+.md-body strong { color: #333; }
+.md-body table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.md-body th { background: #f5f5f5; text-align: left; padding: 8px 10px; border: 1px solid #e0e0e0; font-weight: 600; }
+.md-body td { padding: 8px 10px; border: 1px solid #e0e0e0; }
+.md-body td:first-child, .md-body th:first-child { white-space: nowrap; }
+.md-body pre { background: #1a1a2e; color: #e8e8e8; padding: 14px 16px; border-radius: 6px; overflow-x: auto; font-size: 13px; line-height: 1.5; margin: 12px 0; }
+.md-body code { font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", monospace; font-size: 13px; }
+.md-body :not(pre) > code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; color: #c7254e; font-size: 12px; }
+.md-body blockquote { border-left: 3px solid #1a73e8; padding: 6px 14px; margin: 12px 0; color: #555; background: #f8f9fa; border-radius: 0 6px 6px 0; }
+.md-body hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
+.md-body a { color: #1a73e8; }
+.md-body input[type="checkbox"] { margin-right: 6px; }
+
+/* 面试题模块 */
+.stack-header-btns { display: flex; gap: 8px; }
+.btn-interview { background: #fff; color: #e37400; border-color: #e37400; }
+.btn-interview:hover { background: #fef7e0; }
+.entry-section { margin-top: 32px; }
+.section-title { font-size: 18px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #eee; }
+.interview-section .section-title { border-bottom-color: #fce8e6; }
+.section-title .count { font-weight: 400; color: #999; font-size: 14px; }
+.interview-item { border-left: 3px solid #e37400; }
+.interview-answer { margin-top: 10px; }
+.interview-answer summary { cursor: pointer; color: #1a73e8; font-size: 14px; font-weight: 500; padding: 4px 0; }
+.interview-answer summary:hover { color: #1557b0; }
+.interview-answer .entry-content { margin-top: 8px; border-top: 1px dashed #eee; }
+
+/* 表单 select */
+.form-group select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-family: inherit; background: #fff; }
+.form-group select:focus { outline: none; border-color: #1a73e8; }
+
+/* tool 卡片面试题 badge */
+.badge-interview { display: inline-block; background: #fef7e0; color: #e37400; padding: 2px 10px; border-radius: 12px; font-size: 12px; margin-top: 8px; margin-left: 4px; }

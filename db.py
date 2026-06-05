@@ -39,6 +39,7 @@ def init_db():
             title TEXT NOT NULL,
             content TEXT DEFAULT '',
             tags TEXT DEFAULT '',
+            entry_type TEXT DEFAULT 'note',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (stack_id) REFERENCES stack(id) ON DELETE CASCADE
@@ -47,6 +48,11 @@ def init_db():
     # 兼容旧表：如果 is_deprecated 列不存在则添加
     try:
         conn.execute("ALTER TABLE stack ADD COLUMN is_deprecated INTEGER DEFAULT 0")
+    except:
+        pass
+    # 兼容旧表：如果 entry_type 列不存在则添加
+    try:
+        conn.execute("ALTER TABLE entry ADD COLUMN entry_type TEXT DEFAULT 'note'")
     except:
         pass
 

@@ -16,11 +16,11 @@ def tool_detail(tool_id):
     if not tool:
         return "工具不存在", 404
     stacks = Stack.get_by_tool(tool_id)
-    # 统计每个技术栈的条目数
     stack_list = []
     for s in stacks:
         s_dict = dict(s)
         s_dict["entry_count"] = Stack.entry_count(s["id"])
+        s_dict["interview_count"] = Stack.entry_count(s["id"], "interview")
         stack_list.append(s_dict)
     return render_template("tool.html", tool=tool, stacks=stack_list)
 
@@ -31,8 +31,9 @@ def stack_detail(stack_id):
     if not stack:
         return "技术栈不存在", 404
     tool = Tool.get_by_id(stack["tool_id"])
-    entries = Entry.get_by_stack(stack_id)
-    return render_template("stack.html", tool=tool, stack=stack, entries=entries)
+    notes = Entry.get_by_stack(stack_id, "note")
+    interviews = Entry.get_by_stack(stack_id, "interview")
+    return render_template("stack.html", tool=tool, stack=stack, notes=notes, interviews=interviews)
 
 
 @bp.route("/stack/<int:stack_id>/entry/new", methods=["GET", "POST"])
@@ -45,10 +46,13 @@ def entry_new(stack_id):
         title = request.form["title"].strip()
         content = request.form["content"].strip()
         tags = request.form.get("tags", "").strip()
+        entry_type = request.form.get("entry_type", "note")
         if title:
-            Entry.create(stack_id, title, content, tags)
+            Entry.create(stack_id, title, content, tags, entry_type)
         return redirect(url_for(".stack_detail", stack_id=stack_id))
-    return render_template("entry_form.html", tool=tool, stack=stack, entry=None)
+    # GET 时可从 query string 预设类型
+    preset_type = request.args.get("type", "note")
+    return render_template("entry_form.html", tool=tool, stack=stack, entry=None, preset_type=preset_type)
 
 
 @bp.route("/entry/<int:entry_id>/edit", methods=["GET", "POST"])
@@ -62,10 +66,11 @@ def entry_edit(entry_id):
         title = request.form["title"].strip()
         content = request.form["content"].strip()
         tags = request.form.get("tags", "").strip()
+        entry_type = request.form.get("entry_type", "note")
         if title:
-            Entry.update(entry_id, title, content, tags)
+            Entry.update(entry_id, title, content, tags, entry_type)
         return redirect(url_for(".stack_detail", stack_id=stack["id"]))
-    return render_template("entry_form.html", tool=tool, stack=stack, entry=entry)
+    return render_template("entry_form.html", tool=tool, stack=stack, entry=entry, preset_type=None)
 
 
 @bp.route("/entry/<int:entry_id>/delete", methods=["POST"])

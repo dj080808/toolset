@@ -5,40 +5,86 @@
     <a href="{{ url_for('.tool_detail', tool_id=tool.id) }}" class="back-link">← 返回 {{ tool.name }}</a>
     <div class="stack-header">
         <h1>{{ stack.name }}</h1>
-        <a href="{{ url_for('.entry_new', stack_id=stack.id) }}" class="btn btn-primary">+ 新建条目</a>
+        <div class="stack-header-btns">
+            <a href="{{ url_for('.entry_new', stack_id=stack.id, type='note') }}" class="btn btn-primary">+ 笔记</a>
+            <a href="{{ url_for('.entry_new', stack_id=stack.id, type='interview') }}" class="btn btn-interview">+ 面试题</a>
+        </div>
     </div>
     {% if stack.description %}<p class="desc">{{ stack.description }}</p>{% endif %}
 
-    {% if entries %}
-    <div class="entry-list">
-        {% for e in entries %}
-        <div class="entry-item">
-            <div class="entry-header">
-                <h3>{{ e.title }}</h3>
-                <div class="entry-actions">
-                    <a href="{{ url_for('.entry_edit', entry_id=e.id) }}" class="btn btn-sm">编辑</a>
-                    <form method="POST" action="{{ url_for('.entry_delete', entry_id=e.id) }}" style="display:inline"
-                          onsubmit="return confirm('确定删除「{{ e.title }}」？')">
-                        <button type="submit" class="btn btn-sm btn-danger">删除</button>
-                    </form>
+    <!-- 知识笔记区 -->
+    <section class="entry-section">
+        <h2 class="section-title">📝 知识笔记 <span class="count">{{ notes|length }}</span></h2>
+        {% if notes %}
+        <div class="entry-list">
+            {% for e in notes %}
+            <div class="entry-item">
+                <div class="entry-header">
+                    <h3>{{ e.title }}</h3>
+                    <div class="entry-actions">
+                        <a href="{{ url_for('.entry_edit', entry_id=e.id) }}" class="btn btn-sm">编辑</a>
+                        <form method="POST" action="{{ url_for('.entry_delete', entry_id=e.id) }}" style="display:inline"
+                              onsubmit="return confirm('确定删除「{{ e.title }}」？')">
+                            <button type="submit" class="btn btn-sm btn-danger">删除</button>
+                        </form>
+                    </div>
                 </div>
+                {% if e.tags %}
+                <div class="tags">
+                    {% for tag in e.tags.split(',') %}
+                    <span class="tag">{{ tag.strip() }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if e.content %}
+                <div class="entry-content md-body">{{ e.content | markdown | safe }}</div>
+                {% endif %}
+                <div class="entry-meta">更新于 {{ e.updated_at }}</div>
             </div>
-            {% if e.tags %}
-            <div class="tags">
-                {% for tag in e.tags.split(',') %}
-                <span class="tag">{{ tag.strip() }}</span>
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% if e.content %}
-            <div class="entry-content">{{ e.content | safe }}</div>
-            {% endif %}
-            <div class="entry-meta">更新于 {{ e.updated_at }}</div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <p class="empty">暂无条目，点击右上角开始添加。</p>
-    {% endif %}
+        {% else %}
+        <p class="empty">暂无笔记</p>
+        {% endif %}
+    </section>
+
+    <!-- 面试题区 -->
+    <section class="entry-section interview-section">
+        <h2 class="section-title">🎯 常见面试题 <span class="count">{{ interviews|length }}</span></h2>
+        {% if interviews %}
+        <div class="entry-list">
+            {% for e in interviews %}
+            <div class="entry-item interview-item">
+                <div class="entry-header">
+                    <h3>❓ {{ e.title }}</h3>
+                    <div class="entry-actions">
+                        <a href="{{ url_for('.entry_edit', entry_id=e.id) }}" class="btn btn-sm">编辑</a>
+                        <form method="POST" action="{{ url_for('.entry_delete', entry_id=e.id) }}" style="display:inline"
+                              onsubmit="return confirm('确定删除「{{ e.title }}」？')">
+                            <button type="submit" class="btn btn-sm btn-danger">删除</button>
+                        </form>
+                    </div>
+                </div>
+                {% if e.tags %}
+                <div class="tags">
+                    {% for tag in e.tags.split(',') %}
+                    <span class="tag">{{ tag.strip() }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if e.content %}
+                <details class="interview-answer">
+                    <summary>查看答案</summary>
+                    <div class="entry-content md-body">{{ e.content | markdown | safe }}</div>
+                </details>
+                {% endif %}
+                <div class="entry-meta">更新于 {{ e.updated_at }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty">暂无面试题</p>
+        {% endif %}
+    </section>
 </div>
 {% endblock %}

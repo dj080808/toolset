@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python seed.py)",
+      "Bash(python seed_nacos.py)",
+      "Bash(curl -s http://127.0.0.1:5000/skillset/tool/1)",
+      "Bash(python *)"
+    ]
+  }
+}

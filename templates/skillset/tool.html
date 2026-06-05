@@ -11,6 +11,12 @@
         <summary class="roadmap-title">🗺️ Spring Cloud 学习路线建议</summary>
         <div class="roadmap-phases">
             <div class="phase">
+                <div class="phase-num phase-num-p0">P0</div>
+                <div class="phase-body">
+                    <strong>前置基础</strong>——Spring Boot（自动配置、起步依赖、Actuator），不先掌握无法理解 Spring Cloud
+                </div>
+            </div>
+            <div class="phase">
                 <div class="phase-num">P1</div>
                 <div class="phase-body">
                     <strong>基础入门</strong>——服务发现（Nacos）→ 远程调用（Feign）→ 负载均衡（LoadBalancer）
@@ -31,17 +37,17 @@
             <div class="phase">
                 <div class="phase-num">P4</div>
                 <div class="phase-body">
-                    <strong>消息与可观测性</strong>——Stream 消息驱动 → SkyWalking APM → Sleuth 链路追踪
+                    <strong>消息与可观测性</strong>——Stream 消息驱动 → SkyWalking APM → Micrometer Tracing 链路追踪
                 </div>
             </div>
             <div class="phase">
                 <div class="phase-num">P5</div>
                 <div class="phase-body">
-                    <strong>高级主题</strong>——Seata 分布式事务 → Security/OAuth2 → K8s → 契约测试
+                    <strong>高级主题</strong>——Seata 分布式事务 → MyBatis-Plus 数据层 → K8s → Admin → Contract
                 </div>
             </div>
         </div>
-        <p class="roadmap-note">💡 按 P1→P5 顺序学习，Eureka 已过时仅需了解。每个技术栈下面都可以添加你的面试笔记条目。</p>
+        <p class="roadmap-note">💡 按 P0→P5 顺序学习。最下方灰色卡片为过时技术（Eureka/Hystrix/Ribbon/Zuul/Sleuth/OAuth2旧项目），面试可能问替代关系。</p>
     </details>
 
     {% if stacks %}
@@ -53,7 +59,8 @@
                 {% if s.is_deprecated %}<span class="deprecated-badge">过时</span>{% endif %}
             </h3>
             {% if s.description %}<p>{{ s.description }}</p>{% endif %}
-            <span class="badge">{{ s.entry_count }} 条</span>
+            <span class="badge">{{ s.entry_count }} 笔记</span>
+            {% if s.interview_count %}<span class="badge badge-interview">{{ s.interview_count }} 面试题</span>{% endif %}
         </a>
         {% endfor %}
     </div>

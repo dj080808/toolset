@@ -1,22 +1,30 @@
 {% extends "base.html" %}
-{% block title %}{% if entry %}编辑{% else %}新建{% endif %}条目 - {{ stack.name }}{% endblock %}
+{% block title %}{% if entry %}编辑{% else %}新建{% endif %}{{ '面试题' if (entry and entry.entry_type == 'interview') or preset_type == 'interview' else '笔记' }} - {{ stack.name }}{% endblock %}
 {% block content %}
 <div class="container">
     <a href="{{ url_for('.stack_detail', stack_id=stack.id) }}" class="back-link">← 返回 {{ stack.name }}</a>
-    <h1>{% if entry %}编辑{% else %}新建{% endif %}条目</h1>
+    {% set is_interview = (entry and entry.entry_type == 'interview') or preset_type == 'interview' %}
+    <h1>{% if entry %}编辑{% else %}新建{% endif %}{{ '面试题' if is_interview else '笔记' }}</h1>
     <p class="desc">{{ tool.name }} / {{ stack.name }}</p>
 
     <form method="POST" class="entry-form">
         <div class="form-group">
-            <label for="title">标题</label>
+            <label for="title">{{ '面试题目' if is_interview else '标题' }}</label>
             <input type="text" name="title" id="title" value="{{ entry.title if entry else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="entry_type">类型</label>
+            <select name="entry_type" id="entry_type">
+                <option value="note" {% if (entry and entry.entry_type == 'note') or preset_type == 'note' %}selected{% endif %}>📝 知识笔记</option>
+                <option value="interview" {% if is_interview %}selected{% endif %}>🎯 面试题</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="tags">标签（逗号分隔）</label>
             <input type="text" name="tags" id="tags" value="{{ entry.tags if entry else '' }}">
         </div>
         <div class="form-group">
-            <label for="content">内容（支持 Markdown 渲染）</label>
+            <label for="content">内容（支持 Markdown）</label>
             <textarea name="content" id="content" rows="20">{{ entry.content if entry else '' }}</textarea>
         </div>
         <button type="submit" class="btn btn-primary">保存</button>

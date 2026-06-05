@@ -1,9 +1,20 @@
 from flask import Flask, redirect, url_for
+import markdown
+
 from db import init_db
 from tools.skillset.routes import bp as skillset_bp
 
 app = Flask(__name__)
 app.register_blueprint(skillset_bp)
+
+
+# Jinja2 markdown filter
+@app.template_filter("markdown")
+def markdown_filter(text):
+    return markdown.markdown(
+        text,
+        extensions=["fenced_code", "tables", "codehilite"],
+    )
 
 
 @app.route("/")
