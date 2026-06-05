@@ -27,6 +27,7 @@ def init_db():
             name TEXT NOT NULL,
             description TEXT DEFAULT '',
             sort_order INTEGER DEFAULT 0,
+            is_deprecated INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (tool_id) REFERENCES tool(id) ON DELETE CASCADE,
             UNIQUE(tool_id, name)
@@ -43,5 +44,11 @@ def init_db():
             FOREIGN KEY (stack_id) REFERENCES stack(id) ON DELETE CASCADE
         );
     """)
+    # 兼容旧表：如果 is_deprecated 列不存在则添加
+    try:
+        conn.execute("ALTER TABLE stack ADD COLUMN is_deprecated INTEGER DEFAULT 0")
+    except:
+        pass
+
     conn.commit()
     conn.close()

@@ -49,3 +49,19 @@ h1 { font-size: 26px; margin-bottom: 8px; }
 .form-group label { display: block; font-weight: 500; margin-bottom: 6px; font-size: 14px; }
 .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-family: inherit; resize: vertical; }
 .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #1a73e8; }
+
+/* 学习路线 */
+.roadmap { background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: default; }
+.roadmap-title { font-size: 16px; font-weight: 600; cursor: pointer; list-style: none; }
+.roadmap-title::-webkit-details-marker { display: none; }
+.roadmap-phases { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.phase { display: flex; gap: 12px; align-items: flex-start; }
+.phase-num { background: #1a73e8; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; flex-shrink: 0; min-width: 36px; text-align: center; }
+.phase-body { font-size: 14px; color: #555; padding-top: 2px; }
+.phase-body strong { color: #333; }
+.roadmap-note { margin-top: 14px; font-size: 13px; color: #888; border-top: 1px solid #eee; padding-top: 12px; }
+
+/* 过时技术栈 */
+.stack-card.deprecated { opacity: 0.55; border: 1px dashed #ddd; }
+.stack-card.deprecated:hover { opacity: 0.8; }
+.deprecated-badge { display: inline-block; background: #fce8e6; color: #c5221f; padding: 1px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; vertical-align: middle; margin-left: 6px; }

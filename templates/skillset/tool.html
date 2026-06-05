@@ -6,11 +6,52 @@
     <h1>{{ tool.name }}</h1>
     {% if tool.description %}<p class="desc">{{ tool.description }}</p>{% endif %}
 
+    <!-- 学习路线建议 -->
+    <details class="roadmap" open>
+        <summary class="roadmap-title">🗺️ Spring Cloud 学习路线建议</summary>
+        <div class="roadmap-phases">
+            <div class="phase">
+                <div class="phase-num">P1</div>
+                <div class="phase-body">
+                    <strong>基础入门</strong>——服务发现（Nacos）→ 远程调用（Feign）→ 负载均衡（LoadBalancer）
+                </div>
+            </div>
+            <div class="phase">
+                <div class="phase-num">P2</div>
+                <div class="phase-body">
+                    <strong>高可用与容错</strong>——Sentinel 流量控制 → Resilience4j 熔断 → Circuit Breaker 抽象
+                </div>
+            </div>
+            <div class="phase">
+                <div class="phase-num">P3</div>
+                <div class="phase-body">
+                    <strong>网关与配置</strong>——Gateway 网关 → Config 配置中心 → Bus 动态刷新
+                </div>
+            </div>
+            <div class="phase">
+                <div class="phase-num">P4</div>
+                <div class="phase-body">
+                    <strong>消息与可观测性</strong>——Stream 消息驱动 → SkyWalking APM → Sleuth 链路追踪
+                </div>
+            </div>
+            <div class="phase">
+                <div class="phase-num">P5</div>
+                <div class="phase-body">
+                    <strong>高级主题</strong>——Seata 分布式事务 → Security/OAuth2 → K8s → 契约测试
+                </div>
+            </div>
+        </div>
+        <p class="roadmap-note">💡 按 P1→P5 顺序学习，Eureka 已过时仅需了解。每个技术栈下面都可以添加你的面试笔记条目。</p>
+    </details>
+
     {% if stacks %}
     <div class="stack-grid">
         {% for s in stacks %}
-        <a href="{{ url_for('.stack_detail', stack_id=s.id) }}" class="stack-card">
-            <h3>{{ s.name }}</h3>
+        <a href="{{ url_for('.stack_detail', stack_id=s.id) }}" class="stack-card {% if s.is_deprecated %}deprecated{% endif %}">
+            <h3>
+                {{ s.name }}
+                {% if s.is_deprecated %}<span class="deprecated-badge">过时</span>{% endif %}
+            </h3>
             {% if s.description %}<p>{{ s.description }}</p>{% endif %}
             <span class="badge">{{ s.entry_count }} 条</span>
         </a>
