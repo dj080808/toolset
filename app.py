@@ -1,0 +1,16 @@
+from flask import Flask, redirect, url_for
+from db import init_db
+from tools.skillset.routes import bp as skillset_bp
+
+app = Flask(__name__)
+app.register_blueprint(skillset_bp)
+
+
+@app.route("/")
+def home():
+    return redirect(url_for("skillset.index"))
+
+
+if __name__ == "__main__":
+    init_db()
+    app.run(debug=True, port=5000)

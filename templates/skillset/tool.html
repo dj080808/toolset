@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ tool.name }} - Skillset{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="{{ url_for('.index') }}" class="back-link">← 返回工具列表</a>
+    <h1>{{ tool.name }}</h1>
+    {% if tool.description %}<p class="desc">{{ tool.description }}</p>{% endif %}
+
+    {% if stacks %}
+    <div class="stack-grid">
+        {% for s in stacks %}
+        <a href="{{ url_for('.stack_detail', stack_id=s.id) }}" class="stack-card">
+            <h3>{{ s.name }}</h3>
+            {% if s.description %}<p>{{ s.description }}</p>{% endif %}
+            <span class="badge">{{ s.entry_count }} 条</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">暂无技术栈</p>
+    {% endif %}
+</div>
+{% endblock %}
