@@ -1,0 +1,65 @@
+Date : 2026-06-06 00:09:55
+Directory : c:\Hook\toolset
+Total : 28 files,  2436 codes, 5346 comments, 277 blanks, all 8059 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Python   |         17 |      1,890 |      5,334 |        224 |      7,448 |
+| HTML     |          8 |        379 |          5 |         20 |        404 |
+| PostCSS  |          1 |        100 |          7 |         13 |        120 |
+| Markdown |          1 |         53 |          0 |         19 |         72 |
+| JSON     |          1 |         14 |          0 |          1 |         15 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                 | files      | code       | comment    | blank      | total      |
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                    |         28 |      2,436 |      5,346 |        277 |      8,059 |
+| . (Files)                                            |         14 |      1,734 |      5,331 |        208 |      7,273 |
+| .claude                                              |          1 |         14 |          0 |          1 |         15 |
+| static                                               |          1 |        100 |          7 |         13 |        120 |
+| templates                                            |          8 |        379 |          5 |         20 |        404 |
+| templates (Files)                                    |          1 |         19 |          0 |          1 |         20 |
+| templates\skillset                                   |          7 |        360 |          5 |         19 |        384 |
+| tools                                                |          4 |        209 |          3 |         35 |        247 |
+| tools (Files)                                        |          1 |          0 |          0 |          1 |          1 |
+| tools\skillset                                       |          3 |        209 |          3 |         34 |        246 |
++------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                             | language | code       | comment    | blank      | total      |
++------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Hook\toolset\.claude\settings.local.json          | JSON     |         14 |          0 |          1 |         15 |
+| c:\Hook\toolset\CLAUDE.md                            | Markdown |         53 |          0 |         19 |         72 |
+| c:\Hook\toolset\app.py                               | Python   |         18 |          1 |          9 |         28 |
+| c:\Hook\toolset\db.py                                | Python   |         56 |          3 |          7 |         66 |
+| c:\Hook\toolset\seed.py                              | Python   |         49 |         11 |         16 |         76 |
+| c:\Hook\toolset\seed_all.py                          | Python   |        336 |      1,813 |         51 |      2,200 |
+| c:\Hook\toolset\seed_dubbo.py                        | Python   |         38 |          9 |         12 |         59 |
+| c:\Hook\toolset\seed_dubbo_content.py                | Python   |        213 |        835 |          8 |      1,056 |
+| c:\Hook\toolset\seed_llm_content.py                  | Python   |        173 |          6 |         16 |        195 |
+| c:\Hook\toolset\seed_llm_content2.py                 | Python   |        253 |          9 |         20 |        282 |
+| c:\Hook\toolset\seed_llm_content3.py                 | Python   |        110 |          5 |         11 |        126 |
+| c:\Hook\toolset\seed_llm_stacks.py                   | Python   |         32 |          1 |          5 |         38 |
+| c:\Hook\toolset\seed_middleware.py                   | Python   |        187 |      1,007 |         12 |      1,206 |
+| c:\Hook\toolset\seed_nacos.py                        | Python   |         98 |        433 |         11 |        542 |
+| c:\Hook\toolset\seed_springboot.py                   | Python   |        118 |      1,198 |         11 |      1,327 |
+| c:\Hook\toolset\static\style.css                     | PostCSS  |        100 |          7 |         13 |        120 |
+| c:\Hook\toolset\templates\base.html                  | HTML     |         19 |          0 |          1 |         20 |
+| c:\Hook\toolset\templates\skillset\entry_form.html   | HTML     |         32 |          0 |          2 |         34 |
+| c:\Hook\toolset\templates\skillset\group_detail.html | HTML     |         73 |          1 |          3 |         77 |
+| c:\Hook\toolset\templates\skillset\index.html        | HTML     |         19 |          0 |          1 |         20 |
+| c:\Hook\toolset\templates\skillset\stack.html        | HTML     |         90 |          2 |          3 |         95 |
+| c:\Hook\toolset\templates\skillset\tool.html         | HTML     |         68 |          1 |          3 |         72 |
+| c:\Hook\toolset\templates\skillset\tool_grouped.html | HTML     |         51 |          1 |          5 |         57 |
+| c:\Hook\toolset\templates\skillset\tool_groups.html  | HTML     |         27 |          0 |          2 |         29 |
+| c:\Hook\toolset\tools\__init__.py                    | Python   |          0 |          0 |          1 |          1 |
+| c:\Hook\toolset\tools\skillset\__init__.py           | Python   |          2 |          0 |          1 |          3 |
+| c:\Hook\toolset\tools\skillset\models.py             | Python   |        104 |          0 |         17 |        121 |
+| c:\Hook\toolset\tools\skillset\routes.py             | Python   |        103 |          3 |         16 |        122 |
+| Total                                                |          |      2,436 |      5,346 |        277 |      8,059 |
++------------------------------------------------------+----------+------------+------------+------------+------------+
