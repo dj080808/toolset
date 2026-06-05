@@ -10,7 +10,7 @@
         {% for g in groups %}
         <a href="{{ url_for('.group_detail', tool_id=tool.id, group_name=g.name) }}" class="group-card">
             <div class="group-card-icon">
-                {% if 'Spring' in g.name %}☁️{% elif 'Dubbo' in g.name %}⚡{% elif 'LLM' in g.name %}🤖{% else %}📦{% endif %}
+                {% if 'Spring' in g.name %}☁️{% elif 'Dubbo' in g.name %}⚡{% elif 'LLM' in g.name %}🤖{% elif 'Java' in g.name %}☕{% else %}📦{% endif %}
             </div>
             <h2>{{ g.name }}</h2>
             <div class="group-card-stats">
