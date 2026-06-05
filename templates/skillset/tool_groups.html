@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ tool.name }} - Skillset{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="{{ url_for('.index') }}" class="back-link">← 返回工具列表</a>
+    <h1>{{ tool.name }}</h1>
+    {% if tool.description %}<p class="desc">{{ tool.description }}</p>{% endif %}
+
+    <div class="group-cards">
+        {% for g in groups %}
+        <a href="{{ url_for('.group_detail', tool_id=tool.id, group_name=g.name) }}" class="group-card">
+            <div class="group-card-icon">
+                {% if 'Spring' in g.name %}☁️{% elif 'Dubbo' in g.name %}⚡{% else %}📦{% endif %}
+            </div>
+            <h2>{{ g.name }}</h2>
+            <div class="group-card-stats">
+                <span>{{ g.active_count }} 个技术栈</span>
+                <span>{{ g.entry_count }} 篇笔记</span>
+                <span>{{ g.interview_count }} 道面试题</span>
+            </div>
+            {% if g.deprecated_count > 0 %}
+            <div class="group-card-note">{{ g.deprecated_count }} 个过时技术栈（仅了解）</div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

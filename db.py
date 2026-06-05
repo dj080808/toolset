@@ -55,6 +55,11 @@ def init_db():
         conn.execute("ALTER TABLE entry ADD COLUMN entry_type TEXT DEFAULT 'note'")
     except:
         pass
+    # 兼容旧表：如果 group_name 列不存在则添加
+    try:
+        conn.execute("ALTER TABLE stack ADD COLUMN group_name TEXT DEFAULT ''")
+    except:
+        pass
 
     conn.commit()
     conn.close()

@@ -15,14 +15,52 @@ def tool_detail(tool_id):
     tool = Tool.get_by_id(tool_id)
     if not tool:
         return "工具不存在", 404
+    groups = Stack.get_groups(tool_id)
+    if groups:
+        # 有分组 → 展示分组卡片
+        group_list = []
+        for g in groups:
+            gn = g["group_name"]
+            stacks = Stack.get_by_tool(tool_id, gn)
+            total_entries = sum(Stack.entry_count(s["id"]) for s in stacks)
+            total_interviews = sum(Stack.entry_count(s["id"], "interview") for s in stacks)
+            active = sum(1 for s in stacks if not s["is_deprecated"])
+            deprecated = sum(1 for s in stacks if s["is_deprecated"])
+            group_list.append({
+                "name": gn,
+                "stack_count": len(stacks),
+                "active_count": active,
+                "deprecated_count": deprecated,
+                "entry_count": total_entries,
+                "interview_count": total_interviews,
+            })
+        return render_template("tool_groups.html", tool=tool, groups=group_list)
+    # fallback: no groups → direct stack list
     stacks = Stack.get_by_tool(tool_id)
     stack_list = []
     for s in stacks:
-        s_dict = dict(s)
-        s_dict["entry_count"] = Stack.entry_count(s["id"])
-        s_dict["interview_count"] = Stack.entry_count(s["id"], "interview")
-        stack_list.append(s_dict)
+        sd = dict(s)
+        sd["entry_count"] = Stack.entry_count(s["id"])
+        sd["interview_count"] = Stack.entry_count(s["id"], "interview")
+        stack_list.append(sd)
     return render_template("tool.html", tool=tool, stacks=stack_list)
+
+
+@bp.route("/tool/<int:tool_id>/group/<group_name>")
+def group_detail(tool_id, group_name):
+    tool = Tool.get_by_id(tool_id)
+    if not tool:
+        return "工具不存在", 404
+    stacks = Stack.get_by_tool(tool_id, group_name)
+    if not stacks:
+        return "分组不存在", 404
+    stack_list = []
+    for s in stacks:
+        sd = dict(s)
+        sd["entry_count"] = Stack.entry_count(s["id"])
+        sd["interview_count"] = Stack.entry_count(s["id"], "interview")
+        stack_list.append(sd)
+    return render_template("group_detail.html", tool=tool, group_name=group_name, stacks=stack_list)
 
 
 @bp.route("/stack/<int:stack_id>")
@@ -33,7 +71,8 @@ def stack_detail(stack_id):
     tool = Tool.get_by_id(stack["tool_id"])
     notes = Entry.get_by_stack(stack_id, "note")
     interviews = Entry.get_by_stack(stack_id, "interview")
-    return render_template("stack.html", tool=tool, stack=stack, notes=notes, interviews=interviews)
+    group_name = stack["group_name"] if stack["group_name"] else None
+    return render_template("stack.html", tool=tool, stack=stack, notes=notes, interviews=interviews, group_name=group_name)
 
 
 @bp.route("/stack/<int:stack_id>/entry/new", methods=["GET", "POST"])

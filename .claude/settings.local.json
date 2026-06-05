@@ -4,7 +4,8 @@
       "Bash(python seed.py)",
       "Bash(python seed_nacos.py)",
       "Bash(curl -s http://127.0.0.1:5000/skillset/tool/1)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(curl -s \"http://127.0.0.1:5000/skillset/stack/$\\(python -c \"from db import get_db; r=get_db\\(\\).execute\\(\\\\\"SELECT id FROM stack WHERE group_name='Dubbo' LIMIT 1\\\\\"\\).fetchone\\(\\); print\\(r['id']\\)\"\\)\")"
     ]
   }
 }

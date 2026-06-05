@@ -25,10 +25,23 @@ class Tool:
 
 class Stack:
     @staticmethod
-    def get_by_tool(tool_id):
+    def get_by_tool(tool_id, group_name=None):
         db = get_db()
+        if group_name:
+            return db.execute(
+                "SELECT * FROM stack WHERE tool_id = ? AND group_name = ? ORDER BY sort_order, id",
+                (tool_id, group_name),
+            ).fetchall()
         return db.execute(
             "SELECT * FROM stack WHERE tool_id = ? ORDER BY sort_order, id",
+            (tool_id,),
+        ).fetchall()
+
+    @staticmethod
+    def get_groups(tool_id):
+        db = get_db()
+        return db.execute(
+            "SELECT DISTINCT group_name FROM stack WHERE tool_id = ? AND group_name != '' ORDER BY group_name",
             (tool_id,),
         ).fetchall()
 
