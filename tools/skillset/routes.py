@@ -22,7 +22,7 @@ def tool_detail(tool_id):
         for g in groups:
             gn = g["group_name"]
             stacks = Stack.get_by_tool(tool_id, gn)
-            total_entries = sum(Stack.entry_count(s["id"]) for s in stacks)
+            total_entries = sum(Stack.entry_count(s["id"], "note") for s in stacks)
             total_interviews = sum(Stack.entry_count(s["id"], "interview") for s in stacks)
             active = sum(1 for s in stacks if not s["is_deprecated"])
             deprecated = sum(1 for s in stacks if s["is_deprecated"])
@@ -40,7 +40,7 @@ def tool_detail(tool_id):
     stack_list = []
     for s in stacks:
         sd = dict(s)
-        sd["entry_count"] = Stack.entry_count(s["id"])
+        sd["entry_count"] = Stack.entry_count(s["id"], "note")
         sd["interview_count"] = Stack.entry_count(s["id"], "interview")
         stack_list.append(sd)
     return render_template("tool.html", tool=tool, stacks=stack_list)
@@ -57,7 +57,7 @@ def group_detail(tool_id, group_name):
     stack_list = []
     for s in stacks:
         sd = dict(s)
-        sd["entry_count"] = Stack.entry_count(s["id"])
+        sd["entry_count"] = Stack.entry_count(s["id"], "note")
         sd["interview_count"] = Stack.entry_count(s["id"], "interview")
         stack_list.append(sd)
     return render_template("group_detail.html", tool=tool, group_name=group_name, stacks=stack_list)

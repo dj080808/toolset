@@ -1,0 +1,56 @@
+LangChain Quick Start
+
+pip install langchain langchain-openai python-dotenv
+
+from langchain_openai import ChatOpenAI
+from langchain.schema import HumanMessage, SystemMessage
+
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7)
+messages = [
+    SystemMessage(content="You are a helpful assistant, answer in Chinese."),
+    HumanMessage(content="Explain what LangChain is in one sentence")
+]
+response = llm.invoke(messages)
+print(response.content)
+
+## First Chain: Prompt + LLM
+
+from langchain.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from langchain.schema import StrOutputParser
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a {role}. Answer in {language}."),
+    ("user", "{input}")
+])
+llm = ChatOpenAI(model="gpt-3.5-turbo")
+chain = prompt | llm | StrOutputParser()
+result = chain.invoke({
+    "role": "Python Expert",
+    "language": "Chinese",
+    "input": "Explain decorators"
+})
+print(result)
+
+## LCEL (LangChain Expression Language)
+
+| pipe operator chains components, auto supports async/stream/batch:
+
+chain = prompt | llm | output_parser
+# async: result = await chain.ainvoke({"input": "..."})
+# stream: async for chunk in chain.astream({"input": "..."}): print(chunk)
+# batch: results = chain.batch([...])
+# fallback: safe_chain = chain.with_fallbacks([fallback])
+
+## Core Objects
+
+ChatOpenAI: LLM chat model
+PromptTemplate: String template
+ChatPromptTemplate: Chat template (System/Human/AI messages)
+StrOutputParser: Extract plain text
+JsonOutputParser: Extract JSON with Pydantic schema
+RunnablePassthrough: Pass-through data
+RunnableLambda: Custom transform function  
+RunnableParallel: Run multiple chains in parallel
+
+> LCEL is LangChain most important design pattern.
