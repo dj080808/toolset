@@ -30,6 +30,18 @@
             <div class="phase"><div class="phase-num">P4</div><div class="phase-body"><strong>生态与运维</strong>——Dubbo Admin 控制台 → Dubbo 3.x 新特性（Triple/应用级发现）→ Sentinel 集成</div></div>
         </div>
     </details>
+    {% elif group_name == '中间件' %}
+    <details class="roadmap" open>
+        <summary class="roadmap-title">🗺️ 中间件学习路线建议</summary>
+        <div class="roadmap-phases">
+            <div class="phase"><div class="phase-num phase-num-p0">P0</div><div class="phase-body"><strong>前置基础</strong>——Netty（NIO/Reactor 模型），几乎所有高性能中间件的底层通信基础</div></div>
+            <div class="phase"><div class="phase-num">P1</div><div class="phase-body"><strong>消息中间件</strong>——RabbitMQ（可靠投递）→ Kafka（高吞吐流处理）→ RocketMQ（事务消息）</div></div>
+            <div class="phase"><div class="phase-num">P2</div><div class="phase-body"><strong>缓存与NoSQL</strong>——Redis（缓存/锁/队列）→ Elasticsearch（全文检索）→ MongoDB（文档存储）</div></div>
+            <div class="phase"><div class="phase-num">P3</div><div class="phase-body"><strong>数据库与数据同步</strong>——MySQL（InnoDB/MVCC/索引）→ ShardingSphere（分库分表）→ Canal（binlog 同步）</div></div>
+            <div class="phase"><div class="phase-num">P4</div><div class="phase-body"><strong>分布式协调与调度</strong>——ZooKeeper（CP 协调/分布式锁/选主）→ XXL-Job（分布式任务调度）</div></div>
+            <div class="phase"><div class="phase-num">P5</div><div class="phase-body"><strong>运维与基础设施</strong>——Nginx（反向代理）→ Docker（容器化）→ Prometheus+Grafana（监控）→ ELK（日志）→ Jenkins（CI/CD）→ MinIO（对象存储）</div></div>
+        </div>
+    </details>
     {% endif %}
 
     {% if stacks %}
