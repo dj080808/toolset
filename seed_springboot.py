@@ -3,6 +3,55 @@ from db import get_db
 
 NOTES = [
     (
+        "Spring Boot 的历史与发展历程",
+        """## Spring Boot 诞生的背景
+
+在 Spring Boot 出现之前（2013 年以前），Spring 框架虽然是 Java 企业开发的事实标准，但存在严重的**"配置地狱"**问题：
+
+1. **XML 配置灾难**：一个简单的 Web 项目需要上百行 XML（web.xml、applicationContext.xml、spring-mvc.xml、mybatis-config.xml...）
+2. **依赖版本黑洞**：手动管理几十个依赖的版本兼容性，稍有不慎就出现 ClassNotFoundException
+3. **部署繁琐**：需要外置 Tomcat，war 包方式部署，开发和部署环境不一致
+
+## 诞生的故事
+
+- **2012 年**：Spring 团队内部讨论"如何让 Spring 更简单"，提出"约定优于配置"的理念
+- **2013 年 10 月**：Spring Boot 在 SpringOne 大会上首次亮相，演示了一个"5 分钟创建一个 Spring Web 应用"的 Demo
+- **2014 年 4 月**：Spring Boot **v1.0.0** 正式发布，彻底改变了 Java 开发的体验
+
+## 关键版本演进
+
+| 版本 | 时间 | 重大变更 |
+|------|------|----------|
+| **1.0** | 2014.04 | 首个 GA，自动配置、Starter、Actuator 三大核心特性就位 |
+| **1.2** | 2014.12 | 引入 `@SpringBootApplication` 注解，替代三个注解 |
+| **1.5** | 2017.01 | 最后一个 1.x 版本，广泛用于生产 |
+| **2.0** | 2018.03 | 基于 Spring Framework 5，引入 WebFlux 响应式支持，Java 8+ |
+| **2.3** | 2020.05 | 引入 Docker 分层构建支持（`spring-boot:build-image`）|
+| **2.4** | 2020.11 | 配置文件大改：`spring.profiles` 废弃，引入 `spring.config.activate.on-profile` |
+| **2.7** | 2022.05 | 最后一个 2.x 系列，关键垫脚石版本（兼容 javax + jakarta）|
+| **3.0** | 2022.11 | Java 17 基线，Jakarta EE 9+（包名 `javax.*` → `jakarta.*`），AOT 编译 |
+| **3.2** | 2023.11 | 虚拟线程（Virtual Threads）正式支持，RestClient 替代 RestTemplate |
+| **3.4** | 2024.12 | Spring Boot 10 周年，持续增强 Native Image 和云原生支持 |
+
+## 为什么 Spring Boot 能火？
+
+1. **解决真实痛点**：每个 Java 开发者都被 XML 配置折磨过，Spring Boot 对症下药
+2. **生态捆绑**：Spring 早已是 Java 领域的王者，Boot 是 Spring 的"官方快车道"
+3. **微服务浪潮**：2014-2016 年微服务概念大火，Spring Boot 天生适合微服务
+4. **文档质量**：Spring 的文档一直是开源项目的标杆，Boot 继承了这一传统
+5. **社区运营**：SpringOne、Spring I/O、Spring Tips 视频系列，持续输出高质量内容
+
+## Spring Boot 的"精神继承"
+
+Spring Boot 的很多思想继承自：
+- **Ruby on Rails**（2004）——约定优于配置，脚手架生成
+- **Grails**（2006）——Groovy on Spring，Spring 生态的"快速开发框架"
+- **Dropwizard**（2011）——Java 的轻量级 REST 框架，fat jar 部署
+
+> 有趣的是：Spring Boot 的设计领导者 Phil Webb 和 Dave Syer 都曾深入研究过 Rails 和 Grails，把他们的经验带回了 Spring 生态。""",
+        "历史,演进,版本,起源,里程碑",
+    ),
+    (
         "Spring Boot 核心原理：自动配置与起步依赖",
         """## Spring Boot 解决的核心问题
 
@@ -597,6 +646,56 @@ Spring Boot 2.4  →  Spring Cloud 2020.0.0
 ]
 
 INTERVIEWS = [
+    (
+        "Spring Boot 是怎么来的？和 Spring Framework 是什么关系？",
+        """## 参考答案
+
+### 一句话关系
+
+**Spring Boot 是 Spring Framework 的"快速启动器"，不是替代品，而是建立在 Spring 基础上的脚手架。**
+
+### Spring 的历史演进
+
+```
+2002: Rod Johnson 出版《Expert One-on-One J2EE Design and Development》
+      → 批判 EJB 的臃肿，提出轻量级 IoC 容器思想
+
+2004: Spring Framework 1.0 发布
+      → XML 配置的时代，一个 Bean 一行 <bean> 标签
+
+2007: Spring 2.5 → 引入 @Autowired 注解，开始简化配置
+
+2009: Spring 3.0 → Java Config 初现（@Configuration、@Bean）
+
+2014: Spring Boot 1.0 正式发布
+      → "约定优于配置" + 自动配置 + 内嵌容器
+      → 让 Spring 开发从"配置驱动"变成"代码驱动"
+```
+
+### Spring Boot 解决了什么？
+
+在学校 / 自学 Spring 时，你可能经历过：
+1. 项目里 5+ 个 XML 文件，互相 import
+2. 配个数据源要写 30 行 XML
+3. 依赖版本不兼容，各种 ClassNotFoundException
+4. 本地开发用 Tomcat 8，服务器上是 Tomcat 7 → 各种兼容问题
+5. 每个项目都要 copy 一遍基础配置
+
+Spring Boot 解决这些的方式：
+- 自动配置：不写配置 = 用默认，写了 = 覆盖默认
+- Starter：一个依赖替代十几个依赖
+- 内嵌容器：打出来就能跑，`java -jar xx.jar`
+
+### 面试加分点
+
+Spring Boot 不是新技术，它做的三件事 Spring Framework 一直都支持：
+- 自动配置 = `@Configuration` + `@Conditional` + `@Bean`
+- Starter = Maven/Gradle 的 `pom` 依赖传递
+- 内嵌容器 = 把 Tomcat 当成一个 jar 包嵌入
+
+> Spring Boot 的创新不在于技术本身，在于**把正确的事情做成了默认**。""",
+        "历史,关系,演进,起源",
+    ),
     (
         "Spring Boot 的自动配置原理是什么？如何实现一个自动配置？",
         """## 参考答案
