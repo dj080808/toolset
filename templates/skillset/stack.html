@@ -12,6 +12,7 @@
         <div class="stack-header-btns">
             <a href="{{ url_for('.entry_new', stack_id=stack.id, type='note') }}" class="btn btn-primary">+ 笔记</a>
             <a href="{{ url_for('.entry_new', stack_id=stack.id, type='interview') }}" class="btn btn-interview">+ 面试题</a>
+            <button class="btn btn-print" onclick="window.print()" title="导出 PDF">🖨️ 导出</button>
         </div>
     </div>
     {% if stack.description %}<p class="desc">{{ stack.description }}</p>{% endif %}

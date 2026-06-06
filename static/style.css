@@ -117,3 +117,81 @@ h1 { font-size: 26px; margin-bottom: 8px; }
 
 /* tool 卡片面试题 badge */
 .badge-interview { display: inline-block; background: #fef7e0; color: #e37400; padding: 2px 10px; border-radius: 12px; font-size: 12px; margin-top: 8px; margin-left: 4px; }
+
+/* PDF 导出按钮 */
+.btn-print { background: #fff; color: #555; border-color: #ccc; }
+.btn-print:hover { background: #f0f0f0; }
+
+/* ========== 打印样式 ========== */
+@media print {
+  /* 隐藏导航和交互元素 */
+  .nav, .btn, .entry-actions, .back-link, .stack-header-btns,
+  .empty, .entry-meta, .roadmap, .tags,
+  .section-title .count { display: none; }
+
+  /* 展开所有面试题答案 */
+  .interview-answer { display: block !important; }
+  .interview-answer summary { display: none; }
+  .interview-answer .entry-content { display: block !important; }
+
+  /* 全局重置 */
+  * { box-shadow: none !important; text-shadow: none !important; }
+  body { background: #fff; font-size: 12px; color: #000; line-height: 1.45; }
+  .main { padding: 0; min-height: auto; }
+  .container { max-width: none; padding: 0; }
+
+  /* 段落控制：防止孤行 */
+  p, li, h1, h2, h3, h4 { widows: 3; orphans: 3; }
+
+  /* 标题紧贴后续内容，不在页尾孤悬 */
+  h1, h2, h3, h4 { page-break-after: avoid; }
+  .section-title { font-size: 14px; border-bottom: 1px solid #ccc; padding-bottom: 3px; margin: 20px 0 8px; }
+
+  /* 条目：允许自然分页，不再强推整块到下一页 */
+  .entry-item {
+    border-bottom: 1px solid #ddd;
+    box-shadow: none;
+    padding: 10px 0;
+    margin: 0;
+    background: #fff;
+    break-inside: auto;       /* 关键：允许在条目内部断页 */
+    page-break-inside: auto;
+  }
+  .interview-item { border-left: 2px solid #999; padding-left: 10px; }
+  .entry-header h3 { font-size: 13px; margin-bottom: 2px; }
+
+  /* 只对表格和代码块保持不拆散（它们通常不会占满一页） */
+  .md-body table { break-inside: avoid; page-break-inside: avoid; font-size: 11px; margin: 8px 0; }
+  .md-body table tr { break-inside: avoid; }
+  .md-body pre {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: 11px;
+    line-height: 1.35;
+    overflow: visible;
+  }
+
+  /* 标题尺寸 */
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  .stack-header h1 { margin-bottom: 4px; }
+  .desc { font-size: 12px; margin-bottom: 10px; }
+
+  /* Markdown 子内容 */
+  .md-body h2 { font-size: 14px; }
+  .md-body h3 { font-size: 12px; }
+  .md-body p { margin: 4px 0; }
+  .md-body ul, .md-body ol { margin: 4px 0; padding-left: 16px; }
+  .md-body li { margin: 2px 0; }
+  .md-body code { font-size: 11px; }
+  .md-body :not(pre) > code { background: #f5f5f5; padding: 1px 4px; }
+  .md-body blockquote { margin: 6px 0; padding: 4px 10px; border-left: 2px solid #999; background: #f9f9f9; }
+  .md-body th, .md-body td { padding: 5px 8px; }
+  .md-body th { background: #eee; }
+
+  /* 页面设置 */
+  @page { margin: 10mm; size: A4; }
+}
