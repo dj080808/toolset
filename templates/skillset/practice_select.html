@@ -30,7 +30,48 @@
     </form>
 </div>
 
+<div id="saved-note" style="display:none; background:#e8f0fe; border-radius:8px; padding:10px 16px; margin-bottom:16px; font-size:14px; color:#1a73e8;">
+    已加载上次的选择。<a href="#" onclick="clearSaved();return false" style="color:#c5221f;margin-left:12px;">清除选择</a>
+</div>
+
 <script>
+const STORAGE_KEY = 'practice_selection';
+
+// Load saved selection
+function loadSaved() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    try {
+        const ids = JSON.parse(saved);
+        if (!ids.length) return;
+        ids.forEach(id => {
+            const cb = document.querySelector('.stack-check[value="' + id + '"]');
+            if (cb) cb.checked = true;
+        });
+        // Sync group checkboxes
+        document.querySelectorAll('.group-check').forEach(gcb => {
+            const group = gcb.dataset.group;
+            const stacks = document.querySelectorAll('.stack-check[data-group="' + group + '"]');
+            gcb.checked = stacks.length > 0 && Array.from(stacks).every(s => s.checked);
+        });
+        document.getElementById('saved-note').style.display = 'block';
+    } catch(e) {}
+}
+
+// Save selection on submit
+document.querySelector('.practice-form').addEventListener('submit', function() {
+    const checked = Array.from(document.querySelectorAll('.stack-check:checked')).map(cb => parseInt(cb.value));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+});
+
+function clearSaved() {
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('.stack-check').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.group-check').forEach(cb => cb.checked = false);
+    document.getElementById('saved-note').style.display = 'none';
+}
+
+// Group toggle
 document.querySelectorAll('.group-check').forEach(gcb => {
     gcb.addEventListener('change', function() {
         const group = this.dataset.group;
@@ -39,6 +80,18 @@ document.querySelectorAll('.group-check').forEach(gcb => {
         });
     });
 });
+
+// Individual stack toggle updates group checkbox
+document.querySelectorAll('.stack-check').forEach(sc => {
+    sc.addEventListener('change', function() {
+        const group = this.dataset.group;
+        const stacks = document.querySelectorAll('.stack-check[data-group="' + group + '"]');
+        const gcb = document.querySelector('.group-check[data-group="' + group + '"]');
+        if (gcb) gcb.checked = Array.from(stacks).every(s => s.checked);
+    });
+});
+
+loadSaved();
 </script>
 
 <style>

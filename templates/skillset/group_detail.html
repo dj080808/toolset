@@ -7,7 +7,15 @@
         <span class="sep">></span>
         <span class="current">{{ group_name }}</span>
     </div>
-    <h1>{{ group_name }}</h1>
+    <div class="group-header-row">
+        <h1>{{ group_name }}</h1>
+        <form method="POST" action="{{ url_for('.practice_start') }}" style="display:inline">
+            {% for s in stacks %}
+            <input type="hidden" name="stack_ids" value="{{ s.id }}">
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">📝 练习本组</button>
+        </form>
+    </div>
 
     <!-- 学习路线 -->
     {% if group_name == 'Spring Cloud' %}

@@ -13,20 +13,28 @@
 
     <div class="group-cards">
         {% for g in groups %}
-        <a href="{{ url_for('.group_detail', tool_id=tool.id, group_name=g.name) }}" class="group-card">
-            <div class="group-card-icon">
-                {% if 'Spring' in g.name %}☁️{% elif 'Dubbo' in g.name %}⚡{% elif 'LLM' in g.name %}🤖{% elif 'Java' in g.name %}☕{% elif 'C++' in g.name %}🔧{% elif 'Python' in g.name %}🐍{% else %}📦{% endif %}
-            </div>
-            <h2>{{ g.name }}</h2>
-            <div class="group-card-stats">
-                <span>{{ g.active_count }} 个技术栈</span>
-                <span>{{ g.entry_count }} 篇笔记</span>
-                <span>{{ g.interview_count }} 道面试题</span>
-            </div>
-            {% if g.deprecated_count > 0 %}
-            <div class="group-card-note">{{ g.deprecated_count }} 个过时技术栈（仅了解）</div>
-            {% endif %}
-        </a>
+        <div class="group-card">
+            <a href="{{ url_for('.group_detail', tool_id=tool.id, group_name=g.name) }}" class="group-card-link">
+                <div class="group-card-icon">
+                    {% if 'Spring' in g.name %}☁️{% elif 'Dubbo' in g.name %}⚡{% elif 'LLM' in g.name %}🤖{% elif 'Java' in g.name %}☕{% elif 'C++' in g.name %}🔧{% elif 'Python' in g.name %}🐍{% else %}📦{% endif %}
+                </div>
+                <h2>{{ g.name }}</h2>
+                <div class="group-card-stats">
+                    <span>{{ g.active_count }} 个技术栈</span>
+                    <span>{{ g.entry_count }} 篇笔记</span>
+                    <span>{{ g.interview_count }} 道面试题</span>
+                </div>
+                {% if g.deprecated_count > 0 %}
+                <div class="group-card-note">{{ g.deprecated_count }} 个过时技术栈（仅了解）</div>
+                {% endif %}
+            </a>
+            <form method="POST" action="{{ url_for('.practice_start') }}" class="group-card-practice-form">
+                {% for sid in g.stack_ids %}
+                <input type="hidden" name="stack_ids" value="{{ sid }}">
+                {% endfor %}
+                <button type="submit" class="group-card-practice">📝 练习</button>
+            </form>
+        </div>
         {% endfor %}
     </div>
 </div>

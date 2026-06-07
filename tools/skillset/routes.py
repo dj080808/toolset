@@ -33,6 +33,7 @@ def tool_detail(tool_id):
                 "deprecated_count": deprecated,
                 "entry_count": total_entries,
                 "interview_count": total_interviews,
+                "stack_ids": [s["id"] for s in stacks if not s["is_deprecated"]],
             })
         return render_template("tool_groups.html", tool=tool, groups=group_list)
     # fallback: no groups → direct stack list
