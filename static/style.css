@@ -52,6 +52,13 @@ h1 { font-size: 26px; margin-bottom: 8px; }
 .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-family: inherit; resize: vertical; }
 .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #1a73e8; }
 
+/* 面包屑导航 */
+.breadcrumb { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; font-size: 14px; color: #999; margin-bottom: 16px; }
+.breadcrumb a { color: #666; text-decoration: none; }
+.breadcrumb a:hover { color: #1a73e8; text-decoration: underline; }
+.breadcrumb .sep { color: #ccc; margin: 0 2px; }
+.breadcrumb .current { color: #333; font-weight: 500; }
+
 /* 每日练习入口 */
 .practice-hero { display: block; padding: 16px 20px; background: linear-gradient(135deg, #1a73e8, #1557b0); color: #fff; border-radius: 10px; text-decoration: none; font-size: 15px; font-weight: 500; margin-bottom: 24px; transition: transform .2s, box-shadow .2s; text-align: center; }
 .practice-hero:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(26,115,232,.3); color: #fff; }

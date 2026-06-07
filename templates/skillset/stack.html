@@ -2,11 +2,15 @@
 {% block title %}{{ stack.name }} - {{ tool.name }}{% endblock %}
 {% block content %}
 <div class="container">
-    {% if group_name %}
-    <a href="{{ url_for('.group_detail', tool_id=tool.id, group_name=group_name) }}" class="back-link">← 返回 {{ group_name }}</a>
-    {% else %}
-    <a href="{{ url_for('.tool_detail', tool_id=tool.id) }}" class="back-link">← 返回 {{ tool.name }}</a>
-    {% endif %}
+    <div class="breadcrumb">
+        <a href="{{ url_for('.tool_detail', tool_id=tool.id) }}">{{ tool.name }}</a>
+        {% if group_name %}
+        <span class="sep">></span>
+        <a href="{{ url_for('.group_detail', tool_id=tool.id, group_name=group_name) }}">{{ group_name }}</a>
+        {% endif %}
+        <span class="sep">></span>
+        <span class="current">{{ stack.name }}</span>
+    </div>
     <div class="stack-header">
         <h1>{{ stack.name }}</h1>
         <div class="stack-header-btns">

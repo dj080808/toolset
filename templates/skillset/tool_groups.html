@@ -2,7 +2,11 @@
 {% block title %}{{ tool.name }} - Skillset{% endblock %}
 {% block content %}
 <div class="container">
-    <a href="{{ url_for('.index') }}" class="back-link">← 返回工具列表</a>
+    <div class="breadcrumb">
+        <a href="{{ url_for('.index') }}">工具列表</a>
+        <span class="sep">></span>
+        <span class="current">{{ tool.name }}</span>
+    </div>
     <h1>{{ tool.name }}</h1>
     {% if tool.description %}<p class="desc">{{ tool.description }}</p>{% endif %}
     <a href="{{ url_for('.practice_select') }}" class="practice-hero">📝 每日练习 — 随机 10 道面试题，自评打分</a>
