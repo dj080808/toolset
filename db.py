@@ -61,5 +61,13 @@ def init_db():
     except:
         pass
 
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS favorite (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            entry_id INTEGER NOT NULL UNIQUE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (entry_id) REFERENCES entry(id) ON DELETE CASCADE
+        );
+    """)
     conn.commit()
     conn.close()

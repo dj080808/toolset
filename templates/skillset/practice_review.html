@@ -19,6 +19,9 @@
             <div class="review-answer user-answer">{{ answers.get(q.id, '(未作答)') or '(未作答)' }}</div>
         </div>
 
+        <div class="review-fav">
+            <button class="btn btn-sm btn-fav fav-btn" data-eid="{{ q.id }}" onclick="toggleFav(this)">⭐ 收藏此题</button>
+        </div>
         <details class="review-ref">
             <summary>查看标准答案</summary>
             <div class="entry-content md-body">{{ q.content | markdown | safe }}</div>
@@ -66,6 +69,16 @@
 </style>
 
 <script>
+async function toggleFav(btn) {
+    const eid = btn.dataset.eid;
+    const resp = await fetch('/skillset/favorite/' + eid + '/toggle', {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}});
+    if (resp.ok) {
+        const data = await resp.json();
+        btn.textContent = data.favorited ? '⭐ 已收藏' : '☆ 收藏此题';
+        btn.className = data.favorited ? 'btn btn-sm btn-fav-active' : 'btn btn-sm btn-fav';
+    }
+}
+
 function calcScore() {
     let total = 0;
     document.querySelectorAll('.self-rate').forEach(sr => {

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from .models import Tool, Stack, Entry
+from .models import Tool, Stack, Entry, Favorite
 
 bp = Blueprint("skillset", __name__, url_prefix="/skillset", template_folder="../../templates/skillset")
 
@@ -153,3 +153,27 @@ def practice_review():
     ids = list(answers.keys())
     questions = [q for q in (Entry.get_by_id(eid) for eid in ids) if q]
     return render_template("practice_review.html", questions=questions, answers=answers)
+
+
+# ==================== Favorites ====================
+
+@bp.route("/favorites")
+def favorite_list():
+    favorites = Favorite.get_all()
+    return render_template("favorites.html", favorites=favorites)
+
+
+@bp.route("/favorite/<int:entry_id>/toggle", methods=["POST"])
+def favorite_toggle(entry_id):
+    if Favorite.is_favorited(entry_id):
+        Favorite.remove(entry_id)
+        favorited = False
+    else:
+        Favorite.add(entry_id)
+        favorited = True
+    # AJAX request: return JSON
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.content_type == 'application/json':
+        return {"favorited": favorited}
+    # Form request: redirect back
+    ref = request.form.get("ref", url_for(".index"))
+    return redirect(ref)

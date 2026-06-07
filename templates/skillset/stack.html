@@ -64,6 +64,7 @@
                     <h3>❓ {{ e.title }}</h3>
                     <div class="entry-actions">
                         <a href="{{ url_for('.entry_edit', entry_id=e.id) }}" class="btn btn-sm">编辑</a>
+                        <button class="btn btn-sm btn-fav fav-btn" data-eid="{{ e.id }}" onclick="toggleFav(this)">⭐</button>
                         <form method="POST" action="{{ url_for('.entry_delete', entry_id=e.id) }}" style="display:inline"
                               onsubmit="return confirm('确定删除「{{ e.title }}」？')">
                             <button type="submit" class="btn btn-sm btn-danger">删除</button>
@@ -92,4 +93,16 @@
         {% endif %}
     </section>
 </div>
+
+<script>
+async function toggleFav(btn) {
+    const eid = btn.dataset.eid;
+    const resp = await fetch('/skillset/favorite/' + eid + '/toggle', {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}});
+    if (resp.ok) {
+        const data = await resp.json();
+        btn.textContent = data.favorited ? '⭐' : '☆';
+        btn.className = data.favorited ? 'btn btn-sm btn-fav-active' : 'btn btn-sm btn-fav';
+    }
+}
+</script>
 {% endblock %}

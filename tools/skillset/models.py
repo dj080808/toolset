@@ -131,3 +131,32 @@ class Entry:
             f"ORDER BY RANDOM() LIMIT ?",
             (*stack_ids, limit),
         ).fetchall()
+
+
+class Favorite:
+    @staticmethod
+    def add(entry_id):
+        db = get_db()
+        db.execute('INSERT OR IGNORE INTO favorite (entry_id) VALUES (?)', (entry_id,))
+        db.commit()
+
+    @staticmethod
+    def remove(entry_id):
+        db = get_db()
+        db.execute('DELETE FROM favorite WHERE entry_id = ?', (entry_id,))
+        db.commit()
+
+    @staticmethod
+    def is_favorited(entry_id):
+        db = get_db()
+        return db.execute('SELECT 1 FROM favorite WHERE entry_id = ?', (entry_id,)).fetchone() is not None
+
+    @staticmethod
+    def get_all():
+        db = get_db()
+        return db.execute(
+            'SELECT e.*, s.name as stack_name, f.created_at as fav_at '
+            'FROM favorite f JOIN entry e ON f.entry_id = e.id '
+            'JOIN stack s ON e.stack_id = s.id '
+            'ORDER BY f.created_at DESC'
+        ).fetchall()

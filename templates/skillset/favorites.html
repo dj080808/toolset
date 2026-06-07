@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}收藏的面试题{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="javascript:history.back()" class="back-link">← 返回</a>
+    <h1>⭐ 收藏的面试题</h1>
+    <p class="desc">练习中觉得好的题目收藏在这里，方便反复复习。</p>
+
+    {% if favorites %}
+    <div class="entry-list">
+        {% for e in favorites %}
+        <div class="entry-item interview-item">
+            <div class="entry-header">
+                <h3>{{ e.title }}</h3>
+                <div class="entry-actions">
+                    <span class="fav-stack">{{ e.stack_name }}</span>
+                    <form method="POST" action="{{ url_for('.favorite_toggle', entry_id=e.id) }}">
+                        <input type="hidden" name="ref" value="{{ url_for('.favorite_list') }}">
+                        <button type="submit" class="btn btn-sm btn-fav-active">⭐ 取消</button>
+                    </form>
+                </div>
+            </div>
+            <details class="interview-answer">
+                <summary>查看答案</summary>
+                <div class="entry-content md-body">{{ e.content | markdown | safe }}</div>
+            </details>
+            <div class="entry-meta">收藏于 {{ e.fav_at }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">还没有收藏的面试题。在答题练习或技术栈页面点击 ⭐ 即可收藏。</p>
+    {% endif %}
+</div>
+
+<style>
+.fav-stack { font-size: 12px; color: #999; background: #f5f5f5; padding: 2px 8px; border-radius: 4px; }
+.btn-fav-active { color: #e37400; border-color: #e37400; }
+.btn-fav-active:hover { background: #fef7e0; }
+</style>
+{% endblock %}
