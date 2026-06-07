@@ -118,3 +118,16 @@ class Entry:
         db = get_db()
         db.execute("DELETE FROM entry WHERE id = ?", (entry_id,))
         db.commit()
+
+    @staticmethod
+    def get_random_interviews(stack_ids, limit=10):
+        """Get random interview questions from selected stacks"""
+        db = get_db()
+        placeholders = ",".join("?" * len(stack_ids))
+        return db.execute(
+            f"SELECT e.*, s.name as stack_name, s.group_name FROM entry e "
+            f"JOIN stack s ON e.stack_id = s.id "
+            f"WHERE s.id IN ({placeholders}) AND e.entry_type = 'interview' "
+            f"ORDER BY RANDOM() LIMIT ?",
+            (*stack_ids, limit),
+        ).fetchall()

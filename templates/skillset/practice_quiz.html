@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}每日练习 - 答题{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="{{ url_for('.practice_select') }}" class="back-link">← 返回选择</a>
+    <h1>答题练习 ({{ questions|length }} 题)</h1>
+    <p class="desc">认真作答，提交后可对照标准答案自评打分。</p>
+
+    <form method="POST" action="{{ url_for('.practice_review') }}">
+        {% for q in questions %}
+        <div class="quiz-item">
+            <div class="quiz-header">
+                <span class="quiz-num">第 {{ loop.index }} 题</span>
+                <span class="quiz-stack">{{ q.stack_name }}</span>
+            </div>
+            <h3>{{ q.title }}</h3>
+            <input type="hidden" name="answer_{{ q.id }}" value="">
+            <textarea name="answer_{{ q.id }}" rows="6"
+                      placeholder="在此作答..."></textarea>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary btn-lg">提交答案</button>
+    </form>
+</div>
+
+<style>
+.quiz-item { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.quiz-header { display: flex; gap: 12px; margin-bottom: 8px; }
+.quiz-num { font-weight: 600; color: #1a73e8; font-size: 14px; }
+.quiz-stack { font-size: 12px; color: #999; background: #f5f5f5; padding: 2px 8px; border-radius: 4px; }
+.quiz-item h3 { font-size: 15px; margin-bottom: 10px; line-height: 1.5; }
+.quiz-item textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-family: inherit; resize: vertical; }
+.quiz-item textarea:focus { outline: none; border-color: #1a73e8; }
+.btn-lg { padding: 12px 32px; font-size: 16px; margin-top: 8px; }
+</style>
+{% endblock %}

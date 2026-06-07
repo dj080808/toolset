@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}练习结果{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="{{ url_for('.practice_select') }}" class="back-link">← 再来一组</a>
+    <h1>对照答案</h1>
+    <p class="desc">对比你的答案和标准答案，给自己打分。诚实自评，效果最好。</p>
+
+    {% for q in questions %}
+    <div class="review-item" id="q{{ q.id }}">
+        <div class="review-header">
+            <span class="review-num">第 {{ loop.index }} 题</span>
+            <span class="review-stack">{{ q.stack_name }}</span>
+        </div>
+        <h3>{{ q.title }}</h3>
+
+        <div class="review-section">
+            <h4>你的答案</h4>
+            <div class="review-answer user-answer">{{ answers.get(q.id, '(未作答)') or '(未作答)' }}</div>
+        </div>
+
+        <details class="review-ref">
+            <summary>查看标准答案</summary>
+            <div class="entry-content md-body">{{ q.content | markdown | safe }}</div>
+        </details>
+
+        <div class="self-rate">
+            <span>自评：</span>
+            <label><input type="radio" name="rate_{{ q.id }}" value="3"> 完全正确</label>
+            <label><input type="radio" name="rate_{{ q.id }}" value="2"> 部分正确</label>
+            <label><input type="radio" name="rate_{{ q.id }}" value="1"> 基本错误</label>
+            <label><input type="radio" name="rate_{{ q.id }}" value="0"> 未作答</label>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="score-box">
+        <button class="btn btn-primary btn-lg" onclick="calcScore()">计算得分</button>
+        <div id="score-result" style="display:none; margin-top:16px;">
+            <span class="score-big" id="score-value"></span>
+            <span class="score-label">/ {{ questions|length * 3 }} 分</span>
+        </div>
+    </div>
+</div>
+
+<style>
+.review-item { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.review-header { display: flex; gap: 12px; margin-bottom: 6px; }
+.review-num { font-weight: 600; color: #1a73e8; font-size: 14px; }
+.review-stack { font-size: 12px; color: #999; background: #f5f5f5; padding: 2px 8px; border-radius: 4px; }
+.review-item h3 { font-size: 15px; margin-bottom: 12px; }
+.review-section { margin-bottom: 8px; }
+.review-section h4 { font-size: 13px; color: #666; margin-bottom: 4px; }
+.review-answer { padding: 10px 12px; border-radius: 6px; font-size: 14px; white-space: pre-wrap; border: 1px solid #ddd; }
+.user-answer { background: #f8f9fa; }
+.review-ref { margin: 10px 0; }
+.review-ref summary { cursor: pointer; color: #1a73e8; font-size: 14px; font-weight: 500; }
+.review-ref summary:hover { color: #1557b0; }
+.review-ref .entry-content { margin-top: 8px; border-top: 1px dashed #eee; padding-top: 8px; }
+.self-rate { margin-top: 10px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 13px; }
+.self-rate label { cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.score-box { text-align: center; padding: 20px; }
+.score-big { font-size: 48px; font-weight: 700; color: #1a73e8; }
+.score-label { font-size: 20px; color: #999; }
+.btn-lg { padding: 12px 32px; font-size: 16px; }
+</style>
+
+<script>
+function calcScore() {
+    let total = 0;
+    document.querySelectorAll('.self-rate').forEach(sr => {
+        const checked = sr.querySelector('input:checked');
+        if (checked) total += parseInt(checked.value);
+    });
+    const max = {{ questions|length }} * 3;
+    document.getElementById('score-value').textContent = total;
+    document.getElementById('score-result').style.display = 'block';
+}
+</script>
+{% endblock %}

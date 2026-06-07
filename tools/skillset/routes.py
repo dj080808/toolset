@@ -119,3 +119,37 @@ def entry_delete(entry_id):
         Entry.delete(entry_id)
         return redirect(url_for(".stack_detail", stack_id=entry["stack_id"]))
     return "条目不存在", 404
+
+
+# ==================== Practice ====================
+
+@bp.route("/practice")
+def practice_select():
+    groups = Stack.get_groups(1)
+    grouped = {}
+    for g in groups:
+        gn = g["group_name"]
+        stacks = Stack.get_by_tool(1, gn)
+        active = [dict(s) for s in stacks if not s["is_deprecated"]]
+        if active: grouped[gn] = active
+    return render_template("practice_select.html", grouped=grouped)
+
+
+@bp.route("/practice/start", methods=["POST"])
+def practice_start():
+    stack_ids = request.form.getlist("stack_ids", type=int)
+    if not stack_ids: return redirect(url_for(".practice_select"))
+    questions = Entry.get_random_interviews(stack_ids, 10)
+    if not questions: return "please add interview items first", 404
+    return render_template("practice_quiz.html", questions=questions)
+
+
+@bp.route("/practice/review", methods=["POST"])
+def practice_review():
+    answers = {}
+    for key, val in request.form.items():
+        if key.startswith("answer_"):
+            answers[int(key.replace("answer_", ""))] = val.strip()
+    ids = list(answers.keys())
+    questions = [q for q in (Entry.get_by_id(eid) for eid in ids) if q]
+    return render_template("practice_review.html", questions=questions, answers=answers)
