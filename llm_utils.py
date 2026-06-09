@@ -9,8 +9,24 @@ MODEL = "deepseek-chat"
 
 
 def get_api_key():
-    """每次调用时实时读取，支持 OS 环境变量和 .env 文件"""
-    return os.environ.get("DEEPSEEK_API_KEY", "")
+    """每次调用时实时读取，OS 环境变量优先，fallback 到 .env 文件"""
+    key = os.environ.get("DEEPSEEK_API_KEY", "")
+    if key:
+        return key
+    # OS 没有 → 尝试读 .env 文件（不用 dotenv，直接解析）
+    try:
+        from pathlib import Path
+        env_file = Path(__file__).parent / ".env"
+        if env_file.exists():
+            for line in env_file.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line.startswith("DEEPSEEK_API_KEY="):
+                    val = line.split("=", 1)[1].strip()
+                    if val and val != "sk-your-key-here":
+                        return val
+    except Exception:
+        pass
+    return ""
 
 
 def generate_questions(stack_names, count=5):
