@@ -12,6 +12,7 @@
             <div class="quiz-header">
                 <span class="quiz-num">第 {{ loop.index }} 题</span>
                 <span class="quiz-stack">{{ q.stack_name }}</span>
+                {% if q.source == 'ai' %}<span class="quiz-ai">🤖 AI</span>{% endif %}
             </div>
             <h3>{{ q.title }}</h3>
             <textarea name="answer_{{ q.id }}" rows="6"

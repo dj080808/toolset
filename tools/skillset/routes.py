@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from .models import Tool, Stack, Entry, Favorite
+import llm_utils
+
 
 bp = Blueprint("skillset", __name__, url_prefix="/skillset", template_folder="../../templates/skillset")
 
@@ -140,9 +142,52 @@ def practice_select():
 def practice_start():
     stack_ids = request.form.getlist("stack_ids", type=int)
     if not stack_ids: return redirect(url_for(".practice_select"))
-    questions = Entry.get_random_interviews(stack_ids, 10)
-    if not questions: return "please add interview items first", 404
-    return render_template("practice_quiz.html", questions=questions)
+
+    use_ai = request.form.get("use_ai") == "1"
+    ai_count = 5 if use_ai else 0
+    internal_count = 10 - ai_count
+
+    # Get internal questions
+    questions = []
+    if internal_count > 0:
+        internal = Entry.get_random_interviews(stack_ids, internal_count)
+        for q in internal:
+            q = dict(q)
+            q["source"] = "internal"
+            questions.append(q)
+
+    # AI-generated questions
+    ai_questions = []
+    if ai_count > 0:
+        
+        # Get stack names for selected IDs
+        stack_names = []
+        for sid in stack_ids:
+            s = Stack.get_by_id(sid)
+            if s: stack_names.append(s["name"])
+        if stack_names:
+            ai_raw = llm_utils.generate_questions(stack_names, ai_count)
+            for aq in ai_raw:
+                ai_questions.append({
+                    "id": 0,  # ephemeral, not in DB
+                    "title": aq["title"],
+                    "content": aq["answer"],
+                    "stack_name": "AI 出题",
+                    "entry_type": "interview",
+                    "source": "ai",
+                })
+
+    # Mix: alternate internal and AI questions
+    mixed = []
+    max_len = max(len(questions), len(ai_questions))
+    for i in range(max_len):
+        if i < len(questions): mixed.append(questions[i])
+        if i < len(ai_questions): mixed.append(ai_questions[i])
+
+    if not mixed:
+        return "请先添加面试题条目或设置 DEEPSEEK_API_KEY", 404
+
+    return render_template("practice_quiz.html", questions=mixed)
 
 
 @bp.route("/practice/review", methods=["POST"])

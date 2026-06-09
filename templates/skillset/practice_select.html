@@ -4,7 +4,7 @@
 <div class="container">
     <a href="{{ url_for('.tool_detail', tool_id=1) }}" class="back-link">← 返回面试储备</a>
     <h1>每日练习</h1>
-    <p class="desc">选择要练习的技术栈，系统将随机抽取 10 道面试题。提交后对照答案自评打分。</p>
+    <p class="desc">选择要练习的技术栈。可开启 AI 出题，混合内部题库和 AI 生成的新题。</p>
 
     <form method="POST" action="{{ url_for('.practice_start') }}" class="practice-form">
         {% for group_name, stacks in grouped.items() %}
@@ -26,7 +26,14 @@
             </div>
         </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary btn-lg">开始练习 (随机 10 题)</button>
+        <div class="ai-toggle">
+            <label class="ai-label">
+                <input type="checkbox" name="use_ai" value="1" checked>
+                🤖 AI 混合出题 — 5 道来自题库 + 5 道 DeepSeek 生成
+            </label>
+            <p class="ai-note">需要设置环境变量 <code>DEEPSEEK_API_KEY</code>，未设置时自动回退到全题库模式。</p>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">开始练习 (10 题)</button>
     </form>
 </div>
 
