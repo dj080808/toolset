@@ -4,7 +4,11 @@
 <div class="container">
     <a href="{{ url_for('.practice_select') }}" class="back-link">← 返回选择</a>
     <h1>答题练习 ({{ questions|length }} 题)</h1>
-    <p class="desc">认真作答，提交后可对照标准答案自评打分。</p>
+    <p class="desc">认真作答，提交后可对照标准答案自评打分。
+    {% if ai_usage %}
+    <span class="token-info">🤖 AI 出题消耗 Token：{{ ai_usage.total_tokens }}（提示 {{ ai_usage.prompt_tokens }} + 生成 {{ ai_usage.completion_tokens }}）</span>
+    {% endif %}
+    </p>
 
     <form method="POST" action="{{ url_for('.practice_review') }}">
         {% for q in questions %}
