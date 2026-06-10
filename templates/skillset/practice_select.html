@@ -6,7 +6,15 @@
     <h1>每日练习</h1>
     <p class="desc">选择要练习的技术栈。可开启 AI 出题，混合内部题库和 AI 生成的新题。</p>
 
-    <form method="POST" action="{{ url_for('.practice_start') }}" class="practice-form">
+    <div id="loading-overlay" style="display:none">
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">正在出题中...</p>
+            <p class="loading-sub">AI 生成需要几秒钟，请耐心等待</p>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('.practice_start') }}" class="practice-form" onsubmit="showLoading()">
         {% for group_name, stacks in grouped.items() %}
         <div class="practice-group">
             <h3>
@@ -42,6 +50,10 @@
 </div>
 
 <script>
+function showLoading() {
+    document.getElementById('loading-overlay').style.display = 'flex';
+}
+
 const STORAGE_KEY = 'practice_selection';
 
 // Load saved selection
@@ -111,5 +123,11 @@ loadSaved();
 .practice-stack-label:has(input:checked) { background: #e8f0fe; border-color: #1a73e8; color: #1a73e8; font-weight: 500; }
 .practice-stack-label input { display: none; }
 .btn-lg { padding: 12px 32px; font-size: 16px; margin-top: 16px; }
+#loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.5); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.loading-box { background: #fff; border-radius: 12px; padding: 40px 48px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,.15); }
+.loading-spinner { width: 40px; height: 40px; border: 4px solid #e0e0e0; border-top-color: #1a73e8; border-radius: 50%; margin: 0 auto 20px; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 6px; }
+.loading-sub { font-size: 13px; color: #999; }
 </style>
 {% endblock %}
