@@ -166,15 +166,23 @@ def practice_start():
             s = Stack.get_by_id(sid)
             if s: stack_names.append(s["name"])
         if stack_names:
+            # Get or create "AI 出题" stack to persist questions
+            ai_stack = next((s for s in Stack.get_by_tool(1) if s["name"] == "AI 出题"), None)
+            if not ai_stack:
+                ai_stack = Stack.create(1, "AI 出题", "AI 生成的面试题，收藏后可反复复习", 999)
+            ai_sid = ai_stack["id"]
+
             ai_raw = llm_utils.generate_questions(stack_names, ai_count)
-            for aq in ai_raw:
+            for i, aq in enumerate(ai_raw):
+                entry = Entry.create(ai_sid, aq["title"], aq["answer"], "AI生成", "interview")
                 ai_questions.append({
-                    "id": 0,  # ephemeral, not in DB
+                    "id": entry["id"],
                     "title": aq["title"],
                     "content": aq["answer"],
                     "stack_name": "AI 出题",
                     "entry_type": "interview",
                     "source": "ai",
+                    "ai_index": i,
                 })
 
     # Mix: alternate internal and AI questions
@@ -193,11 +201,23 @@ def practice_start():
 @bp.route("/practice/review", methods=["POST"])
 def practice_review():
     answers = {}
+    questions = []
+    seen = set()
+
     for key, val in request.form.items():
         if key.startswith("answer_"):
-            answers[int(key.replace("answer_", ""))] = val.strip()
-    ids = list(answers.keys())
-    questions = [q for q in (Entry.get_by_id(eid) for eid in ids) if q]
+            eid = int(key.replace("answer_", ""))
+            if eid <= 0:
+                continue
+            answers[eid] = val.strip()
+            if eid not in seen:
+                seen.add(eid)
+                q = Entry.get_by_id(eid)
+                if q:
+                    q = dict(q)
+                    q["source"] = "ai" if "AI生成" in (q.get("tags") or "") else "internal"
+                    questions.append(q)
+
     return render_template("practice_review.html", questions=questions, answers=answers)
 
 
