@@ -173,7 +173,7 @@ def practice_start():
                 ai_stack = Stack.create(1, "AI 出题", "AI 生成的面试题，收藏后可反复复习", 999)
             ai_sid = ai_stack["id"]
 
-            ai_raw, ai_usage = llm_utils.generate_questions(stack_names, ai_count)
+            ai_raw, ai_usage = llm_utils.generate_questions(stack_names, ai_count, difficulty)
             for i, aq in enumerate(ai_raw):
                 entry = Entry.create(ai_sid, aq["title"], aq["answer"], "AI生成", "interview")
                 ai_questions.append({

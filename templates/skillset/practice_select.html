@@ -39,6 +39,12 @@
                 <input type="checkbox" name="use_ai" value="1" checked>
                 🤖 AI 混合出题 — 5 道来自题库 + 5 道 DeepSeek 生成
             </label>
+            <div class="ai-difficulty">
+                <span>难度：</span>
+                <label><input type="radio" name="difficulty" value="junior"> 简单</label>
+                <label><input type="radio" name="difficulty" value="mid"> 中等</label>
+                <label><input type="radio" name="difficulty" value="senior" checked> 冷酷</label>
+            </div>
             <p class="ai-note">需要设置环境变量 <code>DEEPSEEK_API_KEY</code>，未设置时自动回退到全题库模式。</p>
         </div>
         <button type="submit" class="btn btn-primary btn-lg">开始练习 (10 题)</button>

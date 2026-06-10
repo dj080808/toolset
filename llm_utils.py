@@ -25,17 +25,24 @@ def get_api_key():
     return ""
 
 
-def generate_questions(stack_names, count=5):
+def generate_questions(stack_names, count=5, difficulty="senior"):
     api_key = get_api_key()
     if not api_key:
         return [], {}
 
+    difficulty_prompts = {
+        "junior": "面向初级工程师（1-2年经验）。题目侧重基础概念、常用API、基本配置。答案要简单直接。",
+        "mid": "面向中级工程师（3-5年经验）。题目侧重原理理解、源码分析、性能调优。答案要有深度。",
+        "senior": "面向高级工程师（5年+经验）。题目侧重架构设计、底层原理、故障排查、技术选型。答案要有体系化思维和面试金句。",
+    }
+
     stacks_str = "、".join(stack_names)
+    diff_req = difficulty_prompts.get(difficulty, difficulty_prompts["senior"])
     prompt = f"""你是资深后端面试官。为以下技术栈生成{count}道面试题。
 
 技术栈: {stacks_str}
+{diff_req}
 
-要求: 题目有深度，答案包含核心知识点和面试金句。
 输出纯 JSON: {{"questions":[{{"title":"题目","answer":"答案"}}]}}"""
 
     try:
