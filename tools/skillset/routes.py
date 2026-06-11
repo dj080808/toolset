@@ -144,6 +144,7 @@ def practice_start():
     if not stack_ids: return redirect(url_for(".practice_select"))
 
     use_ai = request.form.get("use_ai") == "1"
+    difficulty = request.form.get("difficulty", "senior")
     ai_count = 5 if use_ai else 0
     internal_count = 10 - ai_count
 
