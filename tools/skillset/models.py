@@ -152,11 +152,28 @@ class Favorite:
         return db.execute('SELECT 1 FROM favorite WHERE entry_id = ?', (entry_id,)).fetchone() is not None
 
     @staticmethod
-    def get_all():
+    def get_all(stack_id=None):
         db = get_db()
+        if stack_id:
+            return db.execute(
+                'SELECT e.*, s.name as stack_name, f.created_at as fav_at '
+                'FROM favorite f JOIN entry e ON f.entry_id = e.id '
+                'JOIN stack s ON e.stack_id = s.id '
+                'WHERE s.id = ? ORDER BY f.created_at DESC',
+                (stack_id,),
+            ).fetchall()
         return db.execute(
             'SELECT e.*, s.name as stack_name, f.created_at as fav_at '
             'FROM favorite f JOIN entry e ON f.entry_id = e.id '
             'JOIN stack s ON e.stack_id = s.id '
             'ORDER BY f.created_at DESC'
+        ).fetchall()
+
+    @staticmethod
+    def get_stacks():
+        db = get_db()
+        return db.execute(
+            'SELECT DISTINCT s.id, s.name FROM favorite f '
+            'JOIN entry e ON f.entry_id = e.id '
+            'JOIN stack s ON e.stack_id = s.id ORDER BY s.name'
         ).fetchall()

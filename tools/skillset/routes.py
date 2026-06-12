@@ -227,8 +227,10 @@ def practice_review():
 
 @bp.route("/favorites")
 def favorite_list():
-    favorites = Favorite.get_all()
-    return render_template("favorites.html", favorites=favorites)
+    stack_id = request.args.get("stack_id", type=int)
+    favorites = Favorite.get_all(stack_id)
+    stacks = Favorite.get_stacks()
+    return render_template("favorites.html", favorites=favorites, stacks=stacks, current_stack=stack_id)
 
 
 @bp.route("/favorite/<int:entry_id>/toggle", methods=["POST"])

@@ -4,7 +4,14 @@
 <div class="container">
     <a href="javascript:history.back()" class="back-link">← 返回</a>
     <h1>⭐ 收藏的面试题</h1>
-    <p class="desc">练习中觉得好的题目收藏在这里，方便反复复习。</p>
+    <p class="desc">练习中觉得好的题目收藏在这里，按技术栈筛选查看。</p>
+
+    <div class="fav-filter">
+        <a href="{{ url_for('.favorite_list') }}" class="fav-tab {% if not current_stack %}active{% endif %}">全部</a>
+        {% for s in stacks %}
+        <a href="{{ url_for('.favorite_list', stack_id=s.id) }}" class="fav-tab {% if current_stack == s.id %}active{% endif %}">{{ s.name }}</a>
+        {% endfor %}
+    </div>
 
     {% if favorites %}
     <div class="entry-list">
@@ -37,5 +44,9 @@
 .fav-stack { font-size: 12px; color: #999; background: #f5f5f5; padding: 2px 8px; border-radius: 4px; }
 .btn-fav-active { color: #e37400; border-color: #e37400; }
 .btn-fav-active:hover { background: #fef7e0; }
+.fav-filter { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.fav-tab { padding: 6px 14px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; text-decoration: none; color: #666; transition: all .15s; }
+.fav-tab:hover { border-color: #1a73e8; color: #1a73e8; }
+.fav-tab.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
 </style>
 {% endblock %}
