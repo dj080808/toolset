@@ -6,7 +6,7 @@
     {% if tools %}
     <div class="tool-grid">
         {% for t in tools %}
-        <a href="{{ url_for('.tool_detail', tool_id=t.id) }}" class="tool-card">
+        <a href="{{ t.external_url if t.external_url else url_for('.tool_detail', tool_id=t.id) }}" class="tool-card" {{ 'target=_blank' if t.external_url }}>
             <h2>{{ t.name }}</h2>
             {% if t.description %}<p>{{ t.description }}</p>{% endif %}
         </a>
